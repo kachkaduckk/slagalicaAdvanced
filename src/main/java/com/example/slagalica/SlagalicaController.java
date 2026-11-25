@@ -92,7 +92,7 @@ public class SlagalicaController {
                 throw new NumberFormatException();
             }
 
-            size = newSize;
+            // size = newSize;
 
         } catch (NumberFormatException ex) {
 
@@ -112,7 +112,6 @@ public class SlagalicaController {
 
     private void restartPuzzle() {
 
-        // Postavljanje riješene slagalice
         for (int i = 0; i < buttons.size(); i++) {
             if (i == buttons.size() - 1) {
                 buttons.get(i).setText("");
@@ -125,7 +124,6 @@ public class SlagalicaController {
 
         int emptyPosition = buttons.size() - 1;
 
-        // Miješanje izvođenjem nasumičnih legalnih poteza
         int shuffleMoves = size * size * 30;
 
         for (int i = 0; i < shuffleMoves; i++) {
@@ -136,7 +134,6 @@ public class SlagalicaController {
                     random.nextInt(possibleMoves.size())
             );
 
-            // Zamjena sadržaja dva gumba
             String temp = buttons.get(emptyPosition).getText();
 
             buttons.get(emptyPosition).setText(
@@ -215,13 +212,20 @@ public class SlagalicaController {
         int columnClicked = idClicked % size;
         int columnEmpty = idEmpty % size;
 
-        if ((Math.abs(rowClicked - rowEmpty) == 1 && columnClicked == columnEmpty)
-                || (Math.abs(columnClicked - columnEmpty) == 1 && rowClicked == rowEmpty)) {
+        if ((Math.abs(rowClicked - rowEmpty) <= 1 && (Math.abs(columnClicked - columnEmpty) <= 1))
+                || rowClicked == 0 && (Math.abs(rowClicked - rowEmpty) == size-1) && (Math.abs(columnClicked - columnEmpty) <= 1)
+                || rowClicked == size-1 && (Math.abs(rowClicked - rowEmpty) == size-1) && (Math.abs(columnClicked - columnEmpty) <= 1)
+                || columnClicked == 0 && (Math.abs(columnClicked - columnEmpty) == size-1) && (Math.abs(rowClicked - rowEmpty) <= 1)
+                || columnClicked == size-1 && (Math.abs(columnClicked - columnEmpty) == size-1) && (Math.abs(rowClicked - rowEmpty) <= 1)
+                || rowClicked == size-1 && columnClicked==size-1 && rowEmpty==0 && columnEmpty==0
+                || rowClicked == 0 && columnClicked == 0 && rowEmpty == size-1 && columnEmpty == size-1
+                || rowClicked == size-1 && columnClicked == 0 && rowEmpty == 0 && columnEmpty == size-1
+                || rowClicked == 0 && columnClicked == size-1 && rowEmpty == size-1 && columnEmpty == 0){
 
             emptyButton.setText(clickedButton.getText());
             clickedButton.setText("");
-
-        } else {
+        }
+        else {
             missesCount++;
         }
 
